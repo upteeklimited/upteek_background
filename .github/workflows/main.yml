@@ -1,0 +1,30 @@
+name: Upteek background Main
+
+on:
+  push:
+    branches: [ "main" ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Replace /var/www/adminapi/libs files
+        run: |
+          rm -rf /var/www/upteek_background/libs/*
+          cp -r ./* /var/www/upteek_background/libs/
+      - name: Cleanup Actions workspace
+        run: |
+          echo "Cleaning up workspace..."
+          find . -mindepth 1 ! -name '.git' -exec rm -rf {} +
