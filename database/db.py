@@ -10,16 +10,19 @@ import subprocess
 
 config = load_env_config()
 
-# SQLALCHEMY_DATABASE_URL  = "mysql://" + str(config['database_user']) + ":" + str(config['database_pass']) + "@" + str(config['server']) + "/" + str(config['database']) + "?charset=utf8mb4"
 SQLALCHEMY_DATABASE_URL  = config['cleardb_database_url']
+SQLALCHEMY_BACKUP_DATABASE_URL  = config['cleardb_backup_database_url']
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL, pool_recycle=60)
+shadow_engine = create_engine(SQLALCHEMY_BACKUP_DATABASE_URL, pool_recycle=60)
 
 SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=True)
+ShadowSessionLocal = sessionmaker(bind=shadow_engine, autocommit=False, autoflush=True)
 
 Base = declarative_base()
 
 session = SessionLocal()
+shadow_session = ShadowSessionLocal()
 
 def get_db():
     db = SessionLocal()
@@ -124,7 +127,7 @@ class DatabaseBackup:
             raise FileNotFoundError(f"Backup file {backup_file} not found")
 
         cmd = [
-            "mysql", f"--user={db_user}",, f"--password={db_password}", f"--host={db_host}", db_name
+            "mysql", f"--user={db_user}", f"--password={db_password}", f"--host={db_host}", db_name
         ]
 
         with open(backup_path, 'r') as f:

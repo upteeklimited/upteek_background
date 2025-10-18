@@ -14,6 +14,7 @@ def load_env_config():
         'database_user': os.getenv("DATABASE_USERNAME"),
         'database_pass': os.getenv("DATABASE_PASSWORD"),
         'cleardb_database_url': os.getenv("CLEARDB_DATABASE_URL"),
+        'cleardb_backup_database_url': os.getenv("CLEARDB_BACKUP_DATABASE_URL"),
         'secret_key': os.getenv("ACCESS_SECRET_KEY"),
         'password_salt': os.getenv("ACCESS_SALT"),
         'algorithm': os.getenv('ALGORITHM'),
