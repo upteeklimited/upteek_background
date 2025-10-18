@@ -55,27 +55,27 @@ def sync_databases():
                     select(shadow_table).where(getattr(shadow_table.c, pk.name) == row[pk.name])
                 ).first()
 
-                if shadow_row:
-                	shadow_session.execute(
-                        shadow_table.update()
-                        .where(getattr(shadow_table.c, pk.name) == row[pk.name])
-                        .values(**row)
-                    )
-                else:
-                	shadow_session.execute(shadow_table.insert().values(**row))
+				if shadow_row:
+					shadow_session.execute(
+						shadow_table.update()
+						.where(getattr(shadow_table.c, pk.name) == row[pk.name])
+						.values(**row)
+					)
+				else:
+					shadow_session.execute(shadow_table.insert().values(**row))
 
 			# --- 2. Handle deletions ---
 			if "deleted_at" in main_table.c:
 				deleted_stmt = select(main_table.c[pk.name]).where(
-                    main_table.c.deleted_at > last_sync
-                )
-                deleted_ids = [r[0] for r in main_session.execute(deleted_stmt).all()]
-                if deleted_ids:
-                    shadow_session.execute(
-                        shadow_table.delete().where(
-                            getattr(shadow_table.c, pk.name).in_(deleted_ids)
-                        )
-                    )
+					main_table.c.deleted_at > last_sync
+				)
+				deleted_ids = [r[0] for r in main_session.execute(deleted_stmt).all()]
+				if deleted_ids:
+					shadow_session.execute(
+					    shadow_table.delete().where(
+					        getattr(shadow_table.c, pk.name).in_(deleted_ids)
+					    )
+					)
 
 			shadow_session.commit()
 
