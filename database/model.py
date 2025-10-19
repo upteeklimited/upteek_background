@@ -66,6 +66,7 @@ from models.settings import Setting, create_setting, update_setting, update_sett
 from models.statement_headers import Statement_Header, create_statement_header, update_statement_header, delete_statement_header, force_delete_statement_header, get_single_statement_header_by_id, get_statement_headers
 from models.statements import Statement, create_statement, update_statement, delete_statement, force_delete_statement, get_single_statement_by_id, get_statements
 from models.states import State, create_state, update_state, delete_state, force_delete_state, get_single_state_by_id, get_states, get_states_by_country_id
+from models.sync_logs import SyncLog, create_sync_log, update_sync_log, update_sync_log_by_table_name, delete_sync_log, force_delete_sync_log, get_single_sycn_log_by_id, get_single_sycn_log_by_table_name, get_sync_logs
 from models.system_configurations import SystemConfiguration, create_system_configuration, update_system_configuration, delete_system_configuration, force_delete_system_configuration, get_single_system_configuration_by_id, get_single_system_configuration_by_name, get_system_configurations
 from models.tags_products import TagProduct, create_tag_product, update_tag_product, delete_tag_product, force_delete_tag_product, get_single_tag_product_by_id, get_tags_products
 from models.tags import Tag, create_tag, update_tag, delete_tag, force_delete_tag, get_single_tag_by_id, get_single_tag_by_slug, get_tags

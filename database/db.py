@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, MetaData, Table
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session, mapper
 from settings.config import load_env_config
@@ -23,6 +23,9 @@ Base = declarative_base()
 
 session = SessionLocal()
 shadow_session = ShadowSessionLocal()
+
+main_meta = MetaData(bind=engine)
+shadow_meta = MetaData(bind=shadow_engine)
 
 def get_db():
     db = SessionLocal()
