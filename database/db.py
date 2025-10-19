@@ -26,7 +26,7 @@ shadow_session = ShadowSessionLocal()
 
 main_meta = MetaData()
 main_meta.reflect(bind=engine)
-shadow_meta = MetaData(bind=shadow_engine)
+shadow_meta = MetaData()
 shadow_meta.reflect(bind=engine)
 
 def get_db():
