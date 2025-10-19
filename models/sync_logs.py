@@ -70,7 +70,7 @@ def force_delete_sync_log(db: Session, id: int=0, commit: bool=False):
 def get_single_sycn_log_by_id(db: Session, id: int=0):
     return db.query(SyncLog).filter_by(id = id).first()
 
-def get_single_sycn_log_by_table_name(db: Session, table_name: str: None):
+def get_single_sycn_log_by_table_name(db: Session, table_name: str=None):
     return db.query(SyncLog).filter_by(table_name = table_name).first()
 
 def get_sync_logs(db: Session, filters: Dict={}):
