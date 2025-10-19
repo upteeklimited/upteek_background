@@ -59,10 +59,10 @@ def sync_table(table_name):
 
 			# Try to update, else insert
 			result = shadow_db.execute(
-                shadow_table.update().where(shadow_table.c[pk] == pk_value).values(**values)
-            )
-            if result.rowcount == 0:
-            	shadow_db.execute(shadow_table.insert().values(**values))
+			shadow_table.update().where(shadow_table.c[pk] == pk_value).values(**values)
+			)
+			if result.rowcount == 0:
+				shadow_db.execute(shadow_table.insert().values(**values))
 		
 		# Handle HARD DELETES (rows that exist in shadow but not in main)
 		main_ids = [r[0] for r in main_db.execute(select(main_table.c.id)).fetchall()]
@@ -177,4 +177,6 @@ def sync_all_tables():
 		if table != "sync_logs":
 			print(f"Syncing table: {table}")
 			sync_table(table)
+		else:
+			continue
 	return True
