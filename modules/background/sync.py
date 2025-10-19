@@ -49,6 +49,22 @@ def sync_table(table_name):
 		main_table = Table(table_name, main_meta, autoload_with=engine)
 		shadow_table = Table(table_name, shadow_meta, autoload_with=shadow_engine)
 
+		count_stmt = select(func.count()).select_from(shadow_table)
+		shadow_count = shadow_db.execute(count_stmt).scalar_one()
+
+		if shadow_count == 0:
+			print(f"Shadow table '{table_name}' is empty — performing full copy...")
+			all_rows = main_db.execute(select(main_table)).mappings().all()
+
+			if all_rows:
+				shadow_db.execute(shadow_table.insert(), all_rows)
+				shadow_db.commit()
+				print(f"Copied {len(all_rows)} rows to shadow table '{table_name}'.")
+
+			update_sync_time(shadow_db, table_name)
+			update_sync_time(main_db, table_name)
+			return
+
 		last_sync = get_last_sync_time(shadow_db, table_name)
 
 		stmt = select(main_table).where(main_table.c.updated_at > last_sync)
