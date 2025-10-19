@@ -1,6 +1,6 @@
 import time
 import datetime
-from sqlalchemy import MetaData, Table, select
+from sqlalchemy import MetaData, Table, select, func
 from database.redis import redis_client
 from database.db import engine, shadow_engine, SessionLocal, ShadowSessionLocal, get_laravel_datetime, main_meta, shadow_meta
 from models.sync_logs import SyncLog, create_sync_log, update_sync_log_by_table_name, get_single_sycn_log_by_table_name
