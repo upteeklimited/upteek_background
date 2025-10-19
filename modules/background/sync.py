@@ -35,16 +35,18 @@ def get_all_table_names(engine):
 	return list(metadata.tables.keys())
 
 def get_all_tables():
+	global engine
 	metadata = MetaData()
 	metadata.reflect(bind=engine)
 	return list(metadata.tables.keys())
 
 def sync_table(table_name):
+	global engine, shadow_engine
 	main_db = SessionLocal()
 	shadow_db = ShadowSessionLocal()
 
 	try:
-		main_table = Table(table_name, main_meta, autoload_with=main_engine)
+		main_table = Table(table_name, main_meta, autoload_with=engine)
 		shadow_table = Table(table_name, shadow_meta, autoload_with=shadow_engine)
 
 		last_sync = get_last_sync_time(shadow_db, table_name)
@@ -172,7 +174,8 @@ def sync_databases():
 
 
 def sync_all_tables():
-	TABLES = get_all_table_names(main_engine)
+	global engine
+	TABLES = get_all_table_names(engine)
 	for table in TABLES:
 		if table != "sync_logs":
 			print(f"Syncing table: {table}")
